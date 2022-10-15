@@ -1,0 +1,27 @@
+{
+  "name": "carbon-calc",
+  "description": "Web application for measuring your carbon footprint and tracking your progress",
+  "private": true,
+  "version": "1.0.0",
+  "contributors": [
+    {
+      "name": "Jeremy Nguyen",
+      "email": "jeremyn@ucsd.edu",
+      "url": "https://jeremynguyen.dev/"
+    },
+    {
+      "name": "Hannah Yek",
+      "email": "hyek@ucsd.edu"
+    }
+  ],
+  "license": "MIT",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "client": "cd client && vite",
+    "server": "flask run --port=8080"
+  },
+  "keywords": []
+}
