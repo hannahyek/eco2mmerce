@@ -1,0 +1,10 @@
+html,
+body,
+body > #root {
+  height: 100%;
+}
+
+#root > footer {
+  position: sticky;
+  top: 100vh;
+}
