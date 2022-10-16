@@ -58,6 +58,10 @@ const AmazonInput = () => {
       ? (weight = "50")
       : parseFloat((weight = response?.product?.weight?.split(" ")[0]));
 
+    if (typeof weight === "string") {
+      weight = parseFloat(weight);
+    }
+
     const warehouse = await getNearstWarehouse(location);
 
     const eco2mmerce_response = await (
