@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { Pie } from "@nivo/pie";
 
-import { AutoSizer } from "react-virtualized";
+import { AutoSizer as _AutoSizer, AutoSizerProps } from "react-virtualized";
 
 type Data = {
   id: string;
@@ -9,6 +9,8 @@ type Data = {
   value: number;
   color: string;
 };
+
+const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;
 
 const PieChart = ({ data }: { data: Data[] }) => {
   return (
