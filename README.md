@@ -1,11 +1,11 @@
 # carboncalc
 
-![GitHub Actions status](https://github.com/hannahyek/carbon-calc/actions/workflows/ci.yml/badge.svg)
+![GitHub Actions status](https://github.com/hannahyek/eco2mmerce/actions/workflows/ci.yml/badge.svg)
 
 ## Installation
 
 ```bash
-git clone https://github.com/hannahyek/carbon-calc
+git clone https://github.com/hannahyek/eco2mmerce/
 cd carbon-calc
 
 # Install dependencies for Flask
