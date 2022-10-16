@@ -56,7 +56,7 @@ const AmazonInput = () => {
 
     Number.isNaN(parseFloat(response?.product?.weight?.split(" ")[0]))
       ? (weight = "50")
-      : (weight = response?.product?.weight?.split(" ")[0]);
+      : parseFloat((weight = response?.product?.weight?.split(" ")[0]));
 
     const warehouse = await getNearstWarehouse(location);
 
