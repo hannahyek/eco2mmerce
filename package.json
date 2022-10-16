@@ -14,6 +14,11 @@
       "email": "hyek@ucsd.edu"
     }
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hannahyek/eco2mmerce.git"
+  },
+  "homepage": "https://github.com/hannahyek/eco2mmerce#readme",
   "license": "MIT",
   "workspaces": [
     "client",

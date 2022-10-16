@@ -1,13 +1,20 @@
 from flask import Flask, request
 import math
+from flask_cors import CORS, cross_origin
+
+
 app = Flask(__name__)
+cors = CORS(app)
+app.config["CORS_HEADERS"] = "Content-Type"
 
 
 @app.route("/")
 def index():
     return "Hello, World!"
 
+
 @app.route("/ecommerce", methods=["POST"])
+@cross_origin()
 def ecommerce():
     request_data = request.get_json()
 
