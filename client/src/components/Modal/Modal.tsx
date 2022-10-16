@@ -39,11 +39,14 @@ const Modal = () => {
   return (
     <CModal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent minW="container.lg" minH="30rem">
+      <ModalContent
+        minW={[null, null, "container.md", "container.lg"]}
+        minH="30rem"
+      >
         <ModalHeader>eco₂mmerce score</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <SimpleGrid columns={2} spacing={8}>
+          <SimpleGrid columns={[1, null, 2]} spacing={8}>
             <Box>
               <Image src={product.image} />
               <Link href={product.link} isExternal>
