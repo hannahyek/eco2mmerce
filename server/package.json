@@ -6,5 +6,6 @@
     "dev": "FLASK_APP=__init__.py flask run --port=8080",
     "format": "black ."
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {}
 }
