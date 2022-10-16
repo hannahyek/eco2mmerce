@@ -1,4 +1,4 @@
-# carboncalc
+# eco₂mmerce
 
 ![GitHub Actions status](https://github.com/hannahyek/eco2mmerce/actions/workflows/ci.yml/badge.svg)
 
@@ -6,7 +6,7 @@
 
 ```bash
 git clone https://github.com/hannahyek/eco2mmerce/
-cd carbon-calc
+cd eco2mmerce
 
 # Install dependencies for Flask
 python -m venv venv

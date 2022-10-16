@@ -3,23 +3,26 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 
 import { theme } from "./utils";
-import { CalculatorPage, IndexPage } from "./views";
+import { IndexPage } from "./views";
+import { ModalProvider, CarbonProvider, ProductProvider } from "./hooks";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <IndexPage />,
   },
-  {
-    path: "/calculator",
-    element: <CalculatorPage />,
-  },
 ]);
 
 const App = () => {
   return (
     <ChakraProvider theme={theme}>
-      <RouterProvider router={router} />
+      <ProductProvider>
+        <CarbonProvider>
+          <ModalProvider>
+            <RouterProvider router={router} />
+          </ModalProvider>
+        </CarbonProvider>
+      </ProductProvider>
     </ChakraProvider>
   );
 };

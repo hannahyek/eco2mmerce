@@ -1,31 +1,30 @@
-import React from "react";
 import {
   Button,
-  Container,
-  Heading,
   FormLabel,
   Input,
-  Stack,
   FormControl,
   FormErrorMessage,
+  InputGroup,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
-import { Layout } from "../components/Layout";
-import { useLocation } from "../hooks";
-import { getCountryCoords, getNearstWarehouse } from "../utils";
+import { useLocation, useModal, useCarbon, useProduct } from "../../hooks";
+import { getCountryCoords, getNearstWarehouse } from "../../utils";
 
 const AMAZON_API_URL = "https://api.rainforestapi.com/request";
 const ECO2MMERCE_API_URL =
   import.meta.env.VITE_ECO2MMERCE_API_URL ?? "https://api.eco2mmerce.tech";
 
-const CalculatorPage = () => {
+const AmazonInput = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<{ url: string }>();
   const location = useLocation();
+  const { onOpen } = useModal();
+  const [, setCarbon] = useCarbon();
+  const [, setProduct] = useProduct();
 
   const onSubmit = async (data: { url: string }) => {
     const response = await (
@@ -35,6 +34,16 @@ const CalculatorPage = () => {
         }&type=product&url=${data.url}`
       )
     ).json();
+
+    setProduct({
+      title: response.product.title,
+      price: response.product.buybox_winner.price.raw,
+      image: response.product.main_image.link,
+      link: response.product.link,
+    });
+
+    console.log(response);
+
     const country_of_origin =
       response?.product?.specifications?.filter(
         (a: { name: string }) =>
@@ -43,6 +52,7 @@ const CalculatorPage = () => {
 
     const weight = response?.product?.weight.split(" ");
     weight[0] = parseFloat(weight[0]);
+
     const weight_in_lbs =
       weight[1] === "kg" ? Math.round(weight[0] * 2.20462) : weight[0];
 
@@ -69,38 +79,47 @@ const CalculatorPage = () => {
           },
           item: {
             ...getCountryCoords(country_of_origin),
-            weight: parseFloat(weight_in_lbs),
+            weight: parseFloat(weight_in_lbs) ?? 50,
           },
         }),
       })
     ).json();
 
-    console.log(eco2mmerce_response);
+    const res = Object.fromEntries(
+      Object.entries(eco2mmerce_response).map(([k, v]) => [
+        k,
+        Math.round(v as any),
+      ])
+    ) as {
+      flight_emissions: number;
+      total_emissions: number;
+      truck_emissions: number;
+    };
+    setCarbon(res);
+    onOpen();
   };
 
   return (
-    <Layout>
-      <Container my={8}>
-        <Heading mb={4}>Calculator</Heading>
-        <Stack as="form" gap={4} onSubmit={handleSubmit(onSubmit)}>
-          <FormControl isInvalid={!!errors.url}>
-            <FormLabel>Amazon Link</FormLabel>
-            <Input
-              placeholder="https://www.amazon.com/dp/B0B3MPLPSS"
-              maxW="25rem"
-              {...register("url", { required: true })}
-            />
-            <FormErrorMessage
-              children={errors.url && "Please enter a valid Amazon link"}
-            />
-          </FormControl>
-          <Button w="min-content" type="submit" isLoading={isSubmitting}>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <FormControl isInvalid={!!errors.url}>
+        <FormLabel>Enter a link to an Amazon product</FormLabel>
+        <InputGroup>
+          <Input
+            placeholder="https://www.amazon.com/dp/B0B3MPLPSS"
+            maxW="25rem"
+            borderRightRadius="0"
+            {...register("url", { required: true })}
+          />
+          <Button type="submit" isLoading={isSubmitting} borderLeftRadius="0">
             Calculate
           </Button>
-        </Stack>
-      </Container>
-    </Layout>
+        </InputGroup>
+        <FormErrorMessage
+          children={errors.url && "Please enter a valid Amazon link"}
+        />
+      </FormControl>
+    </form>
   );
 };
 
-export default CalculatorPage;
+export default AmazonInput;
