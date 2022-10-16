@@ -41,29 +41,24 @@ const AmazonInput = () => {
       image: response.product.main_image.link,
       link: response.product.link,
     });
-
-    console.log(response);
-
     const country_of_origin =
       response?.product?.specifications?.filter(
         (a: { name: string }) =>
           a.name === "Country of Origin" || a.name === "Country"
       )[0]?.value ?? "China";
 
-    const weight = response?.product?.weight.split(" ");
-    weight[0] = parseFloat(weight[0]);
+    let weight =
+      response?.product?.weight ??
+      response?.product?.specifications?.filter(
+        (a: { name: string }) => a.name === "Weight" || a.name === "weight"
+      )[0]?.value ??
+      "50";
 
-    const weight_in_lbs =
-      weight[1] === "kg" ? Math.round(weight[0] * 2.20462) : weight[0];
+    Number.isNaN(parseFloat(response?.product?.weight?.split(" ")[0]))
+      ? (weight = "50")
+      : (weight = response?.product?.weight?.split(" ")[0]);
 
     const warehouse = await getNearstWarehouse(location);
-
-    console.log({
-      country_of_origin,
-      country_of_origin_coords: getCountryCoords(country_of_origin),
-      weight_in_lbs,
-      warehouse,
-    });
 
     const eco2mmerce_response = await (
       await fetch(`${ECO2MMERCE_API_URL}/ecommerce`, {
@@ -79,7 +74,7 @@ const AmazonInput = () => {
           },
           item: {
             ...getCountryCoords(country_of_origin),
-            weight: parseFloat(weight_in_lbs) ?? 50,
+            weight: weight ?? 50,
           },
         }),
       })
